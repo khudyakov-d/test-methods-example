@@ -7,10 +7,14 @@ import java.util.UUID;
  */
 public class ServicePlan {
     private UUID id;
+    /* Длина не больше 128 символов и не меньше 2 включительно не содержит спец символов */
     private String name;
+    /* Длина не больше 1024 символов и не меньше 1 включительно */
     private String details;
-    private int min;
-    private int max;
-    private int fee;
+    /* Не больше 999999 и не меньше 1 включительно */
+    private int maxSeats;
+    /* Не больше 999999 и не меньше 1 включительно, minSeats >= maxSeats */
+    private int minSeats;
+    /* Больше ли равно 0 но меньше либо равно 999999 */
     private int feePerUnit;
 }

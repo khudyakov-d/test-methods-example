@@ -9,7 +9,7 @@ import javax.ws.rs.core.Response;
  * @author Timur Zolotuhin (tzolotuhin@gmail.com)
  */
 @Path("/hello")
-public class HelloWorldService {
+public class EndpointService {
     @GET
     @Path("/{param}")
     public Response getMsg(@PathParam("param") String msg) {
