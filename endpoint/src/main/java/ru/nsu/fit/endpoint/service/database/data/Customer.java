@@ -36,4 +36,28 @@ public class Customer {
         Validate.isTrue(!pass.equalsIgnoreCase("123qwe"), "Password is easy");
         Validate.isTrue(money >= 0, "Money mist be positive value");
     }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public String getPass() {
+        return pass;
+    }
+
+    public int getMoney() {
+        return money;
+    }
 }

@@ -9,7 +9,5 @@ public class Subscription {
     private UUID id;
     private UUID customerId;
     private UUID servicePlanId;
-    private int maxSeats;
-    private int minSeats;
     private int usedSeats;
 }
