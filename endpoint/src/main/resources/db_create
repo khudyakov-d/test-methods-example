@@ -1,8 +1,8 @@
-# Create user
-mysql> CREATE USER 'finley'@'localhost' IDENTIFIED BY 'some_pass';
-mysql> GRANT ALL PRIVILEGES ON *.* TO 'finley'@'localhost' WITH GRANT OPTION;
+# Create user (execute under root)
+CREATE USER 'user'@'localhost' IDENTIFIED BY 'user';
+GRANT ALL PRIVILEGES ON *.* TO 'user'@'localhost' WITH GRANT OPTION;
 
-# Create database
+# Create database (execute under the user)
 CREATE DATABASE testmethods;
 USE testmethods;
 

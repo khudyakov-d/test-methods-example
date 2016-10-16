@@ -71,7 +71,7 @@ public class DBService {
     private static void init() {
         logger.debug("-------- MySQL JDBC Connection Testing ------------");
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException ex) {
             logger.debug("Where is your MySQL JDBC Driver?", ex);
             throw new RuntimeException(ex);
@@ -82,7 +82,7 @@ public class DBService {
         try {
             connection = DriverManager
                     .getConnection(
-                            "jdbc:mysql://localhost:3306/testmethods?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC",
+                            "jdbc:mysql://localhost:3306/testmethods?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&useSSL=false",
                             "user",
                             "user");
         } catch (SQLException ex) {
