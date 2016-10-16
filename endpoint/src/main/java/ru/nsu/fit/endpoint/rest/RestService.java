@@ -3,6 +3,7 @@ package ru.nsu.fit.endpoint.rest;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import ru.nsu.fit.endpoint.service.database.DBService;
 import ru.nsu.fit.endpoint.service.database.data.Customer;
+import ru.nsu.fit.endpoint.shared.JsonMapper;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
@@ -19,8 +20,9 @@ public class RestService {
     @POST
     @Path("/create_customer")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createCustomer(Customer.CustomerData customerData) {
+    public Response createCustomer(String customerDataJson) {
         try {
+            Customer.CustomerData customerData = JsonMapper.fromJson(customerDataJson, Customer.CustomerData.class);
             DBService.createCustomer(customerData);
             return Response.status(200).entity(customerData.toString()).build();
         } catch (IllegalArgumentException ex) {
