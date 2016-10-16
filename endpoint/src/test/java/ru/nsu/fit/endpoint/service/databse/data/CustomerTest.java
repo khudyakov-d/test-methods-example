@@ -14,27 +14,27 @@ public class CustomerTest {
 
     @Test
     public void testCreateNewCustomer() {
-        new Customer("John", "Wick", "john_wick@gmail.com", "strongpass", 0);
+        new Customer.CustomerData("John", "Wick", "john_wick@gmail.com", "strongpass", 0);
     }
 
     @Test
     public void testCreateNewCustomerWithShortPass() {
         expectedEx.expect(IllegalArgumentException.class);
         expectedEx.expectMessage("Password's length should be more or equal 6 symbols");
-        new Customer("John", "Wick", "john_wick@gmail.com", "123", 0);
+        new Customer.CustomerData("John", "Wick", "john_wick@gmail.com", "123", 0);
     }
 
     @Test
     public void testCreateNewCustomerWithLongPass() {
         expectedEx.expect(IllegalArgumentException.class);
         expectedEx.expectMessage("Password's length should be more or equal 6 symbols");
-        new Customer("John", "Wick", "john_wick@gmail.com", "123qwe123qwe1", 0);
+        new Customer.CustomerData("John", "Wick", "john_wick@gmail.com", "123qwe123qwe1", 0);
     }
 
     @Test
     public void testCreateNewCustomerWithEasyPass() {
         expectedEx.expect(IllegalArgumentException.class);
         expectedEx.expectMessage("Password is easy");
-        new Customer("John", "Wick", "john_wick@gmail.com", "123qwe", 0);
+        new Customer.CustomerData("John", "Wick", "john_wick@gmail.com", "123qwe", 0);
     }
 }
