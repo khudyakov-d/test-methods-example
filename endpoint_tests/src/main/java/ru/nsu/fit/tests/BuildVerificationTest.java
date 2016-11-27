@@ -37,7 +37,7 @@ public class BuildVerificationTest {
         Invocation.Builder invocationBuilder =	webTarget.request(MediaType.APPLICATION_JSON);
         Response response = invocationBuilder.post(Entity.entity("{\n" +
                 "\t\"firstName\":\"Johnds\",\n" +
-                "    \"lastName\":\"Weakasd\",\n" +
+                "    \"lastName\":\"Weak\",\n" +
                 "    \"login\":\"helloworld123@login.com\",\n" +
                 "    \"pass\":\"password123\",\n" +
                 "    \"money\":\"100\"\n" +

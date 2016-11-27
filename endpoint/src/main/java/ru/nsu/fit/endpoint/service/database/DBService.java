@@ -1,10 +1,12 @@
 package ru.nsu.fit.endpoint.service.database;
 
+import jersey.repackaged.com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.nsu.fit.endpoint.service.database.data.Customer;
 
 import java.sql.*;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -14,6 +16,7 @@ public class DBService {
     // Constants
     private static final String INSERT_CUSTOMER = "INSERT INTO CUSTOMER(id, first_name, last_name, login, pass, money) values ('%s', '%s', '%s', '%s', '%s', %s)";
     private static final String SELECT_CUSTOMER = "SELECT id FROM CUSTOMER WHERE login='%s'";
+    private static final String SELECT_CUSTOMERS = "SELECT * FROM CUSTOMER";
 
     private static final Logger logger = LoggerFactory.getLogger("DB_LOG");
     private static final Object generalMutex = new Object();
@@ -39,6 +42,30 @@ public class DBService {
                                 customer.getData().getLogin(),
                                 customer.getData().getPass(),
                                 customer.getData().getMoney()));
+            } catch (SQLException ex) {
+                logger.debug(ex.getMessage(), ex);
+                throw new RuntimeException(ex);
+            }
+        }
+    }
+
+    public static List<Customer.CustomerData> getCustomers() {
+        synchronized (generalMutex) {
+            logger.info("Get customers");
+
+            try {
+                Statement statement = connection.createStatement();
+                ResultSet rs = statement.executeQuery(SELECT_CUSTOMERS);
+                List<Customer.CustomerData> result = Lists.newArrayList();
+                while (rs.next()) {
+                    result.add(new Customer.CustomerData(
+                            rs.getString(2),
+                            rs.getString(3),
+                            rs.getString(4),
+                            rs.getString(5),
+                            rs.getInt(6)));
+                }
+                return result;
             } catch (SQLException ex) {
                 logger.debug(ex.getMessage(), ex);
                 throw new RuntimeException(ex);
