@@ -1,5 +1,6 @@
 package ru.nsu.fit.endpoint.rest;
 
+import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import ru.nsu.fit.endpoint.service.MainFactory;
 import ru.nsu.fit.endpoint.service.database.data.Customer;
@@ -12,6 +13,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Path("")
 public class RestService {
@@ -69,9 +71,17 @@ public class RestService {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCustomerId(@PathParam("customer_login") String customerLogin) {
         try {
-            //UUID id = DBService.getCustomerIdByLogin(customerLogin);
-            //return Response.ok().entity("{\"id\":\"" + id.toString() + "\"}").build();
-            return null;
+            List<Customer> customers = MainFactory
+                    .getInstance()
+                    .getCustomerManager()
+                    .getCustomers()
+                    .stream()
+                    .filter(x -> x.getLogin().equals(customerLogin))
+                    .collect(Collectors.toList());
+
+            Validate.isTrue(customers.size() == 1);
+
+            return Response.ok().entity(JsonMapper.toJson(customers.get(0), true)).build();
         } catch (IllegalArgumentException ex) {
             return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage() + "\n" + ExceptionUtils.getFullStackTrace(ex)).build();
         }

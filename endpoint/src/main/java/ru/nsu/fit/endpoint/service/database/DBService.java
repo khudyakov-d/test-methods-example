@@ -3,6 +3,7 @@ package ru.nsu.fit.endpoint.service.database;
 import jersey.repackaged.com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import ru.nsu.fit.endpoint.service.database.data.Customer;
+import ru.nsu.fit.endpoint.service.database.data.Plan;
 
 import java.sql.*;
 import java.util.List;
@@ -10,7 +11,10 @@ import java.util.UUID;
 
 public class DBService {
     // Constants
-    private static final String INSERT_CUSTOMER = "INSERT INTO CUSTOMER(id, first_name, last_name, login, pass, money) values ('%s', '%s', '%s', '%s', '%s', %s)";
+    private static final String INSERT_CUSTOMER = "INSERT INTO CUSTOMER(id, first_name, last_name, login, pass, balance) values ('%s', '%s', '%s', '%s', '%s', %s)";
+    private static final String INSERT_SUBSCRIPTION = "INSERT INTO SUBSCRIPTION(id, customer_id, plan_id, fee) values ('%s', '%s', '%s', %s)";
+    private static final String INSERT_PLAN = "INSERT INTO PLAN(id, name, details, fee) values ('%s', '%s', '%s', %s)";
+
     private static final String SELECT_CUSTOMER = "SELECT id FROM CUSTOMER WHERE login='%s'";
     private static final String SELECT_CUSTOMERS = "SELECT * FROM CUSTOMER";
 
@@ -38,7 +42,7 @@ public class DBService {
                                 customerData.getLastName(),
                                 customerData.getLogin(),
                                 customerData.getPass(),
-                                customerData.getMoney()));
+                                customerData.getBalance()));
                 return customerData;
             } catch (SQLException ex) {
                 logger.error(ex.getMessage(), ex);
@@ -61,7 +65,7 @@ public class DBService {
                             .setLastName(rs.getString(3))
                             .setLogin(rs.getString(4))
                             .setPass(rs.getString(5))
-                            .setMoney(rs.getInt(6));
+                            .setBalance(rs.getInt(6));
 
                     result.add(customerData);
                 }
@@ -75,7 +79,7 @@ public class DBService {
 
     public UUID getCustomerIdByLogin(String customerLogin) {
         synchronized (generalMutex) {
-            logger.info(String.format("Method 'getCustomerIdByLogin' was called with data: '%s'.", customerLogin));
+            logger.info(String.format("Method 'getCustomerIdByLogin' was called with data '%s'.", customerLogin));
 
             try {
                 Statement statement = connection.createStatement();
@@ -90,6 +94,28 @@ public class DBService {
                 }
             } catch (SQLException ex) {
                 logger.debug(ex.getMessage(), ex);
+                throw new RuntimeException(ex);
+            }
+        }
+    }
+
+    public Plan createPlan(Plan plan) {
+        synchronized (generalMutex) {
+            logger.info(String.format("Method 'createPlan' was called with data '%s'.", plan));
+
+            plan.setId(UUID.randomUUID());
+            try {
+                Statement statement = connection.createStatement();
+                statement.executeUpdate(
+                        String.format(
+                                INSERT_PLAN,
+                                plan.getId(),
+                                plan.getName(),
+                                plan.getDetails(),
+                                plan.getFee()));
+                return plan;
+            } catch (SQLException ex) {
+                logger.error(ex.getMessage(), ex);
                 throw new RuntimeException(ex);
             }
         }

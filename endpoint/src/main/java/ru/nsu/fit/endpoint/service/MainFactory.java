@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.nsu.fit.endpoint.service.database.DBService;
 import ru.nsu.fit.endpoint.service.manager.CustomerManager;
+import ru.nsu.fit.endpoint.service.manager.PlanManager;
+import ru.nsu.fit.endpoint.service.manager.SubscriptionManager;
 
 public class MainFactory {
     private static MainFactory instance;
@@ -11,6 +13,8 @@ public class MainFactory {
     private Logger logger;
     private DBService dbService;
     private CustomerManager customerManager;
+    private PlanManager planManager;
+    private SubscriptionManager subscriptionManager;
 
     public MainFactory() {
         logger = LoggerFactory.getLogger("FLOW_LOG");
@@ -18,6 +22,8 @@ public class MainFactory {
         dbService = new DBService(logger);
 
         customerManager = new CustomerManager(dbService, logger);
+        planManager = new PlanManager(dbService, logger);
+        subscriptionManager = new SubscriptionManager(dbService, logger);
     }
 
     public static MainFactory getInstance() {
@@ -38,5 +44,13 @@ public class MainFactory {
 
     public CustomerManager getCustomerManager() {
         return customerManager;
+    }
+
+    public PlanManager getPlanManager() {
+        return planManager;
+    }
+
+    public SubscriptionManager getSubscriptionManager() {
+        return subscriptionManager;
     }
 }

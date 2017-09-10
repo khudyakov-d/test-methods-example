@@ -30,7 +30,7 @@ public class CustomerManagerTest {
                 .setLastName("Wick")
                 .setLogin("john_wick@gmail.com")
                 .setPass("Baba_Jaga")
-                .setMoney(0);
+                .setBalance(0);
         customerAfterCreateMethod = customerBeforeCreateMethod.clone();
         customerAfterCreateMethod.setId(UUID.randomUUID());
 

@@ -14,7 +14,7 @@ $(document).ready(function(){
         var dataSet = []
         for(var i = 0; i < json.length; i++) {
             var obj = json[i];
-            dataSet.push([obj.firstName, obj.lastName, obj.login, obj.pass, '100'])
+            dataSet.push([obj.firstName, obj.lastName, obj.login, obj.pass, obj.balance])
         }
 
         //$("#customer_list_id").html(data);
@@ -26,7 +26,7 @@ $(document).ready(function(){
                     { title: "Last Name" },
                     { title: "Email" },
                     { title: "Pass" },
-                    { title: "Money" }
+                    { title: "Balance" }
                 ]
             });
     });

@@ -23,7 +23,7 @@ $(document).ready(function(){
                                              "lastName":lName,
                                              "login":email,
                                              "pass":password,
-                                             "money":"100"
+                                             "balance":"0"
                                          })
                 }).done(function(data) {
                      $.redirect('/endpoint/customers.html', {'login': 'admin', 'pass': 'setup', 'role': 'ADMIN'}, 'GET');

@@ -22,8 +22,8 @@ public class Customer {
     @JsonProperty("pass")
     private String pass;
 
-    @JsonProperty("money")
-    private int money;
+    @JsonProperty("balance")
+    private int balance;
 
     public UUID getId() {
         return id;
@@ -50,8 +50,8 @@ public class Customer {
         return pass;
     }
 
-    public int getMoney() {
-        return money;
+    public int getBalance() {
+        return balance;
     }
 
     public Customer setFirstName(String firstName) {
@@ -74,8 +74,8 @@ public class Customer {
         return this;
     }
 
-    public Customer setMoney(int money) {
-        this.money = money;
+    public Customer setBalance(int balance) {
+        this.balance = balance;
         return this;
     }
 
@@ -87,7 +87,7 @@ public class Customer {
                 ", lastName='" + lastName + '\'' +
                 ", login='" + login + '\'' +
                 ", pass='" + pass + '\'' +
-                ", money=" + money +
+                ", balance=" + balance +
                 '}';
     }
 
@@ -99,7 +99,7 @@ public class Customer {
                 .setLastName(lastName)
                 .setLogin(login)
                 .setPass(pass)
-                .setMoney(money);
+                .setBalance(balance);
     }
 
     @Override
