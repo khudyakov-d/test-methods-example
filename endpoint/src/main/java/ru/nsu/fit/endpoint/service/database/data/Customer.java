@@ -2,99 +2,118 @@ package ru.nsu.fit.endpoint.service.database.data;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.apache.commons.lang.Validate;
 
 import java.util.UUID;
 
-/**
- * @author Timur Zolotuhin (tzolotuhin@gmail.com)
- */
-public class Customer extends Entity<Customer.CustomerData>  {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class Customer {
+    @JsonProperty("id")
     private UUID id;
 
-    public Customer(CustomerData data, UUID id) {
-        super(data);
-        this.id = id;
-        data.validate();
-    }
+    @JsonProperty("firstName")
+    private String firstName;
+
+    @JsonProperty("lastName")
+    private String lastName;
+
+    @JsonProperty("login")
+    private String login;
+
+    @JsonProperty("pass")
+    private String pass;
+
+    @JsonProperty("money")
+    private int money;
 
     public UUID getId() {
         return id;
     }
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public static class CustomerData {
-        /* нет пробелов, длина от 2 до 12 символов включительно, начинается с заглавной буквы, остальные символы строчные, нет цифр и других символов */
-        @JsonProperty("firstName")
-        private String firstName;
+    public Customer setId(UUID id) {
+        this.id = id;
+        return this;
+    }
 
-        /* нет пробелов, длина от 2 до 12 символов включительно, начинается с заглавной буквы, остальные символы строчные, нет цифр и других символов */
-        @JsonProperty("lastName")
-        private String lastName;
+    public String getFirstName() {
+        return firstName;
+    }
 
-        /* указывается в виде email, проверить email на корректность */
-        @JsonProperty("login")
-        private String login;
+    public String getLastName() {
+        return lastName;
+    }
 
-        /* длина от 6 до 12 символов включительно, недолжен быть простым, не должен содержать части login, firstName, lastName */
-        @JsonProperty("pass")
-        private String pass;
+    public String getLogin() {
+        return login;
+    }
 
-        /* счет не может быть отрицательным */
-        @JsonProperty("money")
-        private int money;
+    public String getPass() {
+        return pass;
+    }
 
-        private CustomerData() {}
+    public int getMoney() {
+        return money;
+    }
 
-        public CustomerData(String firstName, String lastName, String login, String pass, int money) {
-            this.firstName = firstName;
-            this.lastName = lastName;
-            this.login = login;
-            this.pass = pass;
-            this.money = money;
-            validate(firstName, lastName, login, pass, money);
-        }
+    public Customer setFirstName(String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
 
-        public void validate() {
-            validate(firstName, lastName, login, pass, money);
-        }
+    public Customer setLastName(String lastName) {
+        this.lastName = lastName;
+        return this;
+    }
 
-        public static void validate(String firstName, String lastName, String login, String pass, int money) {
-            Validate.notNull(pass);
-            Validate.isTrue(pass.length() >= 6 && pass.length() < 13, "Password's length should be more or equal 6 symbols and less or equal 12 symbols");
-            Validate.isTrue(!pass.equalsIgnoreCase("123qwe"), "Password is easy");
-            Validate.isTrue(money >= 0, "Money must be positive value");
-        }
+    public Customer setLogin(String login) {
+        this.login = login;
+        return this;
+    }
 
-        public String getFirstName() {
-            return firstName;
-        }
+    public Customer setPass(String pass) {
+        this.pass = pass;
+        return this;
+    }
 
-        public String getLastName() {
-            return lastName;
-        }
+    public Customer setMoney(int money) {
+        this.money = money;
+        return this;
+    }
 
-        public String getLogin() {
-            return login;
-        }
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", login='" + login + '\'' +
+                ", pass='" + pass + '\'' +
+                ", money=" + money +
+                '}';
+    }
 
-        public String getPass() {
-            return pass;
-        }
+    @Override
+    public Customer clone() {
+        return new Customer()
+                .setId(id)
+                .setFirstName(firstName)
+                .setLastName(lastName)
+                .setLogin(login)
+                .setPass(pass)
+                .setMoney(money);
+    }
 
-        public int getMoney() {
-            return money;
-        }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-        @Override
-        public String toString() {
-            return "CustomerData{" +
-                    "firstName='" + firstName + '\'' +
-                    ", lastName='" + lastName + '\'' +
-                    ", login='" + login + '\'' +
-                    ", pass='" + pass + '\'' +
-                    ", money=" + money +
-                    '}';
-        }
+        Customer customer = (Customer) o;
+
+        return id != null ? id.equals(customer.id) : customer.id == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
 }

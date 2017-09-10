@@ -25,12 +25,12 @@ import ru.nsu.fit.endpoint.shared.Globals;
 
 /**
  * This filter verify the access permissions for a user
- * based on username and password provided in request
- *
- * @author Timur Zolotuhin (tzolotuhin@gmail.com)
+ * based on username and password provided in request.
  */
 @Provider
 public class AuthenticationFilter implements ContainerRequestFilter {
+    public static final String ADMIN = "ADMIN";
+    public static final String UNKNOWN = "UNKNOWN";
 
     @Context
     private ResourceInfo resourceInfo;
@@ -41,37 +41,37 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     @Override
     public void filter(ContainerRequestContext requestContext) {
         Method method = resourceInfo.getResourceMethod();
-        //Access allowed for all
+        // access allowed for all
         if (!method.isAnnotationPresent(PermitAll.class)) {
-            //Access denied for all
+            // access denied for all
             if (method.isAnnotationPresent(DenyAll.class)) {
                 Response ACCESS_FORBIDDEN = Response.status(Response.Status.FORBIDDEN).entity("Access blocked for all users !!").build();
                 requestContext.abortWith(ACCESS_FORBIDDEN);
                 return;
             }
 
-            //Get request headers
+            // get request headers
             final MultivaluedMap<String, String> headers = requestContext.getHeaders();
 
-            //Fetch authorization header
+            // fetch authorization header
             final List<String> authorization = headers.get(AUTHORIZATION_PROPERTY);
             String username = null;
             String password = null;
 
             if (authorization != null && authorization.size() == 1) {
-                //Get encoded username and password
+                // get encoded username and password
                 final String encodedUserPassword = authorization.get(0).replaceFirst(AUTHENTICATION_SCHEME + " ", "");
 
-                //Decode username and password
+                // decode username and password
                 String usernameAndPassword = new String(Base64.decode(encodedUserPassword.getBytes()));
 
-                //Split username and password tokens
+                // split username and password tokens
                 final StringTokenizer tokenizer = new StringTokenizer(usernameAndPassword, ":");
                 username = tokenizer.nextToken();
                 password = tokenizer.nextToken();
             }
 
-            //Verifying Username and password
+            // verifying Username and password
             System.out.println("User: " + username);
             System.out.println("Pass: " + password);
 
@@ -91,11 +91,11 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     }
 
     private boolean isUserAllowed(final String username, final String password, final Set<String> rolesSet, ContainerRequestContext requestContext) {
-        String userRole = Roles.UNKNOWN;
+        String userRole = UNKNOWN;
 
         if (StringUtils.equals(username, Globals.ADMIN_LOGIN) && StringUtils.equals(password, Globals.ADMIN_PASS)) {
             System.out.println("Role is admin");
-            userRole = Roles.ADMIN;
+            userRole = ADMIN;
         }
 
         requestContext.setProperty("ROLE", userRole);

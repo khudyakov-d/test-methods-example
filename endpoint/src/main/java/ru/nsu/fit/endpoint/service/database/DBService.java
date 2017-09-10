@@ -2,80 +2,80 @@ package ru.nsu.fit.endpoint.service.database;
 
 import jersey.repackaged.com.google.common.collect.Lists;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import ru.nsu.fit.endpoint.service.database.data.Customer;
 
 import java.sql.*;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * @author Timur Zolotuhin (tzolotuhin@gmail.com)
- */
 public class DBService {
     // Constants
     private static final String INSERT_CUSTOMER = "INSERT INTO CUSTOMER(id, first_name, last_name, login, pass, money) values ('%s', '%s', '%s', '%s', '%s', %s)";
     private static final String SELECT_CUSTOMER = "SELECT id FROM CUSTOMER WHERE login='%s'";
     private static final String SELECT_CUSTOMERS = "SELECT * FROM CUSTOMER";
 
-    private static final Logger logger = LoggerFactory.getLogger("DB_LOG");
+    private Logger logger;
     private static final Object generalMutex = new Object();
-    private static Connection connection;
+    private Connection connection;
 
-    static {
+    public DBService(Logger logger) {
+        this.logger = logger;
         init();
     }
 
-    public static void createCustomer(Customer.CustomerData customerData) {
+    public Customer createCustomer(Customer customerData) {
         synchronized (generalMutex) {
-            logger.info("Try to create customer");
+            logger.info(String.format("Method 'createCustomer' was called with data: '%s'", customerData));
 
-            Customer customer = new Customer(customerData, UUID.randomUUID());
+            customerData.setId(UUID.randomUUID());
             try {
                 Statement statement = connection.createStatement();
                 statement.executeUpdate(
                         String.format(
                                 INSERT_CUSTOMER,
-                                customer.getId(),
-                                customer.getData().getFirstName(),
-                                customer.getData().getLastName(),
-                                customer.getData().getLogin(),
-                                customer.getData().getPass(),
-                                customer.getData().getMoney()));
+                                customerData.getId(),
+                                customerData.getFirstName(),
+                                customerData.getLastName(),
+                                customerData.getLogin(),
+                                customerData.getPass(),
+                                customerData.getMoney()));
+                return customerData;
             } catch (SQLException ex) {
-                logger.debug(ex.getMessage(), ex);
+                logger.error(ex.getMessage(), ex);
                 throw new RuntimeException(ex);
             }
         }
     }
 
-    public static List<Customer.CustomerData> getCustomers() {
+    public List<Customer> getCustomers() {
         synchronized (generalMutex) {
-            logger.info("Get customers");
+            logger.info("Method 'getCustomers' was called.");
 
             try {
                 Statement statement = connection.createStatement();
                 ResultSet rs = statement.executeQuery(SELECT_CUSTOMERS);
-                List<Customer.CustomerData> result = Lists.newArrayList();
+                List<Customer> result = Lists.newArrayList();
                 while (rs.next()) {
-                    result.add(new Customer.CustomerData(
-                            rs.getString(2),
-                            rs.getString(3),
-                            rs.getString(4),
-                            rs.getString(5),
-                            rs.getInt(6)));
+                    Customer customerData = new Customer()
+                            .setFirstName(rs.getString(2))
+                            .setLastName(rs.getString(3))
+                            .setLogin(rs.getString(4))
+                            .setPass(rs.getString(5))
+                            .setMoney(rs.getInt(6));
+
+                    result.add(customerData);
                 }
                 return result;
             } catch (SQLException ex) {
-                logger.debug(ex.getMessage(), ex);
+                logger.error(ex.getMessage(), ex);
                 throw new RuntimeException(ex);
             }
         }
     }
 
-    public static UUID getCustomerIdByLogin(String customerLogin) {
+    public UUID getCustomerIdByLogin(String customerLogin) {
         synchronized (generalMutex) {
-            logger.info("Try to create customer");
+            logger.info(String.format("Method 'getCustomerIdByLogin' was called with data: '%s'.", customerLogin));
 
             try {
                 Statement statement = connection.createStatement();
@@ -95,7 +95,7 @@ public class DBService {
         }
     }
 
-    private static void init() {
+    public void init() {
         logger.debug("-------- MySQL JDBC Connection Testing ------------");
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -113,14 +113,14 @@ public class DBService {
                             "user",
                             "user");
         } catch (SQLException ex) {
-            logger.debug("Connection Failed! Check output console", ex);
+            logger.error("Connection Failed! Check output console", ex);
             throw new RuntimeException(ex);
         }
 
         if (connection != null) {
             logger.debug("You made it, take control your database now!");
         } else {
-            logger.debug("Failed to make connection!");
+            logger.error("Failed to make connection!");
         }
     }
 }
