@@ -16,9 +16,6 @@ public class Subscription {
     @JsonProperty("planId")
     private UUID planId;
 
-    @JsonProperty("fee")
-    private int fee;
-
     public UUID getId() {
         return id;
     }
@@ -41,14 +38,6 @@ public class Subscription {
 
     public void setPlanId(UUID planId) {
         this.planId = planId;
-    }
-
-    public int getFee() {
-        return fee;
-    }
-
-    public void setFee(int fee) {
-        this.fee = fee;
     }
 
     @Override

@@ -23,8 +23,16 @@ public class PlanManager extends ParentManager {
         return dbService.createPlan(plan);
     }
 
+    public Plan updatePlan(Plan plan) {
+        throw new NotImplementedException("Please implement the method.");
+    }
+
+    public void removePlan(UUID id) {
+        throw new NotImplementedException("Please implement the method.");
+    }
+
     /**
-     * Метод возвращает список планов доступных для покупки пользователем.
+     * Метод возвращает список планов доступных для покупки.
      */
     public List<Plan> getPlans(UUID customerId) {
         throw new NotImplementedException("Please implement the method.");

@@ -14,7 +14,7 @@ public class SubscriptionManager extends ParentManager {
     }
 
     /**
-     * Метод создае подписку. Ограничения:
+     * Метод создает подписку. Ограничения:
      * 1. Подписки с таким планом пользователь не имеет.
      * 2. Стоймость подписки не превышает текущего баланса кастомера и после покупки вычитается из его баласа.
      */
@@ -22,8 +22,12 @@ public class SubscriptionManager extends ParentManager {
         throw new NotImplementedException("Please implement the method.");
     }
 
+    public void removeSubscription(UUID subscriptionId) {
+        throw new NotImplementedException("Please implement the method.");
+    }
+
     /**
-     * Возвращает список подписок для указанного customer.
+     * Возвращает список подписок указанного customer'а.
      */
     public List<Subscription> getSubscriptions(UUID customerId) {
         throw new NotImplementedException("Please implement the method.");

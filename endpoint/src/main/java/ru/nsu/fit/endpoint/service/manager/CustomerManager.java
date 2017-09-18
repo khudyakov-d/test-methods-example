@@ -51,6 +51,10 @@ public class CustomerManager extends ParentManager {
         throw new NotImplementedException("Please implement the method.");
     }
 
+    public void removeCustomer(UUID id) {
+        throw new NotImplementedException("Please implement the method.");
+    }
+
     /**
      * Метод добавляет к текущему баласу amount.
      * amount - должен быть строго больше нуля.
