@@ -1,12 +1,10 @@
-package ru.nsu.fit.tests;
+package ru.nsu.fit.tests.api;
 
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.testng.annotations.Test;
-import ru.nsu.fit.shared.AllureUtils;
-import ru.yandex.qatools.allure.annotations.*;
-import ru.yandex.qatools.allure.model.SeverityLevel;
+import ru.nsu.fit.services.log.Logger;
 
 import javax.ws.rs.client.*;
 import javax.ws.rs.core.MediaType;
@@ -15,13 +13,8 @@ import javax.ws.rs.core.Response;
 /**
  * @author Timur Zolotuhin (tzolotuhin@gmail.com)
  */
-@Title("BuildVerificationTest")
 public class BuildVerificationTest {
-    @Test
-    @Title("Create customer")
-    @Description("Create customer via REST API")
-    @Severity(SeverityLevel.BLOCKER)
-    @Features("Customer feature")
+    @Test(description = "Create customer via API.")
     public void createCustomer() {
         ClientConfig clientConfig = new ClientConfig();
 
@@ -35,22 +28,19 @@ public class BuildVerificationTest {
         WebTarget webTarget = client.target("http://localhost:8080/endpoint/rest").path("create_customer");
 
         Invocation.Builder invocationBuilder =	webTarget.request(MediaType.APPLICATION_JSON);
+        Logger.debug("Try to make POST...");
         Response response = invocationBuilder.post(Entity.entity("{\n" +
                 "\t\"firstName\":\"Johnds\",\n" +
                 "    \"lastName\":\"Weak\",\n" +
                 "    \"login\":\"helloworld123@login.com\",\n" +
                 "    \"pass\":\"password123\",\n" +
-                "    \"money\":\"100\"\n" +
+                "    \"balance\":\"100\"\n" +
                 "}", MediaType.APPLICATION_JSON));
-        AllureUtils.saveTextLog("Response: " + response.readEntity(String.class));
+        Logger.info("Response: " + response.readEntity(String.class));
     }
 
-    @Test(dependsOnMethods = "createCustomer")
-    @Title("Check login")
-    @Description("Get customer id by login")
-    @Severity(SeverityLevel.CRITICAL)
-    @Features("Customer feature")
+    @Test(description = "Try to log into the system.", dependsOnMethods = "createCustomer")
     public void login() {
-
+        // TODO: попробовать получить данные для созданного на предыдущем шаге customer.
     }
 }
