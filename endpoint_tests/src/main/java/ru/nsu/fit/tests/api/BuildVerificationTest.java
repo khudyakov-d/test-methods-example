@@ -25,7 +25,7 @@ public class BuildVerificationTest {
 
         Client client = ClientBuilder.newClient( clientConfig );
 
-        WebTarget webTarget = client.target("http://localhost:8080/endpoint/rest").path("create_customer");
+        WebTarget webTarget = client.target("http://localhost:8080/endpoint/rest").path("customers");
 
         Invocation.Builder invocationBuilder =	webTarget.request(MediaType.APPLICATION_JSON);
         Logger.debug("Try to make POST...");
