@@ -46,7 +46,7 @@ public class RestService {
             List<CustomerPojo> customers = MainFactory.getInstance()
                     .getCustomerManager()
                     .getCustomers().stream()
-                    .filter(x -> customerLogin.isEmpty() || x.getLogin().equals(customerLogin))
+                    .filter(x -> customerLogin.isEmpty() || x.login.equals(customerLogin))
                     .collect(Collectors.toList());
 
             return Response.ok().entity(JsonMapper.toJson(customers, true)).build();

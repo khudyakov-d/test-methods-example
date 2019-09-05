@@ -3,7 +3,8 @@ package ru.nsu.fit.endpoint.database;
 import jersey.repackaged.com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import ru.nsu.fit.endpoint.database.data.CustomerPojo;
-import ru.nsu.fit.endpoint.database.data.Plan;
+import ru.nsu.fit.endpoint.database.data.PlanPojo;
+import ru.nsu.fit.endpoint.shared.JsonMapper;
 
 import java.sql.*;
 import java.util.List;
@@ -29,20 +30,20 @@ public class DBService implements IDBService{
 
     public CustomerPojo createCustomer(CustomerPojo customerData) {
         synchronized (generalMutex) {
-            logger.info(String.format("Method 'createCustomer' was called with data: '%s'", customerData));
+            logger.info(String.format("Method 'createCustomer' was called with data: \n%s", JsonMapper.toJson(customerData, true)));
 
-            customerData.setId(UUID.randomUUID());
+            customerData.id = UUID.randomUUID();
             try {
                 Statement statement = connection.createStatement();
                 statement.executeUpdate(
                         String.format(
                                 INSERT_CUSTOMER,
-                                customerData.getId(),
-                                customerData.getFirstName(),
-                                customerData.getLastName(),
-                                customerData.getLogin(),
-                                customerData.getPass(),
-                                customerData.getBalance()));
+                                customerData.id,
+                                customerData.firstName,
+                                customerData.lastName,
+                                customerData.login,
+                                customerData.pass,
+                                customerData.balance));
                 return customerData;
             } catch (SQLException ex) {
                 logger.error(ex.getMessage(), ex);
@@ -60,12 +61,13 @@ public class DBService implements IDBService{
                 ResultSet rs = statement.executeQuery(SELECT_CUSTOMERS);
                 List<CustomerPojo> result = Lists.newArrayList();
                 while (rs.next()) {
-                    CustomerPojo customerData = new CustomerPojo()
-                            .setFirstName(rs.getString(2))
-                            .setLastName(rs.getString(3))
-                            .setLogin(rs.getString(4))
-                            .setPass(rs.getString(5))
-                            .setBalance(rs.getInt(6));
+                    CustomerPojo customerData = new CustomerPojo();
+
+                    customerData.firstName = rs.getString(2);
+                    customerData.lastName = rs.getString(3);
+                    customerData.login = rs.getString(4);
+                    customerData.pass = rs.getString(5);
+                    customerData.balance = rs.getInt(6);
 
                     result.add(customerData);
                 }
@@ -99,20 +101,20 @@ public class DBService implements IDBService{
         }
     }
 
-    public Plan createPlan(Plan plan) {
+    public PlanPojo createPlan(PlanPojo plan) {
         synchronized (generalMutex) {
             logger.info(String.format("Method 'createPlan' was called with data '%s'.", plan));
 
-            plan.setId(UUID.randomUUID());
+            plan.id = UUID.randomUUID();
             try {
                 Statement statement = connection.createStatement();
                 statement.executeUpdate(
                         String.format(
                                 INSERT_PLAN,
-                                plan.getId(),
-                                plan.getName(),
-                                plan.getDetails(),
-                                plan.getFee()));
+                                plan.id,
+                                plan.name,
+                                plan.details,
+                                plan.fee));
                 return plan;
             } catch (SQLException ex) {
                 logger.error(ex.getMessage(), ex);

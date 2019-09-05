@@ -2,9 +2,8 @@ package ru.nsu.fit.endpoint.manager;
 
 import org.apache.commons.lang.NotImplementedException;
 import org.slf4j.Logger;
-import ru.nsu.fit.endpoint.database.DBService;
 import ru.nsu.fit.endpoint.database.IDBService;
-import ru.nsu.fit.endpoint.database.data.Plan;
+import ru.nsu.fit.endpoint.database.data.PlanPojo;
 
 import java.util.List;
 import java.util.UUID;
@@ -20,11 +19,11 @@ public class PlanManager extends ParentManager {
     /* details - длина не больше 1024 символов и не меньше 1 включительно;
     /* fee - больше либо равно 0 но меньше либо равно 999999.
      */
-    public Plan createPlan(Plan plan) {
+    public PlanPojo createPlan(PlanPojo plan) {
         return dbService.createPlan(plan);
     }
 
-    public Plan updatePlan(Plan plan) {
+    public PlanPojo updatePlan(PlanPojo plan) {
         throw new NotImplementedException("Please implement the method.");
     }
 
@@ -35,7 +34,7 @@ public class PlanManager extends ParentManager {
     /**
      * Метод возвращает список планов доступных для покупки.
      */
-    public List<Plan> getPlans(UUID customerId) {
+    public List<PlanPojo> getPlans(UUID customerId) {
         throw new NotImplementedException("Please implement the method.");
     }
 }

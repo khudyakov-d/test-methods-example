@@ -8,74 +8,20 @@ import java.util.UUID;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CustomerPojo {
     @JsonProperty("id")
-    private UUID id;
+    public UUID id;
 
     @JsonProperty("firstName")
-    private String firstName;
+    public String firstName;
 
     @JsonProperty("lastName")
-    private String lastName;
+    public String lastName;
 
     @JsonProperty("login")
-    private String login;
+    public String login;
 
     @JsonProperty("pass")
-    private String pass;
+    public String pass;
 
     @JsonProperty("balance")
-    private int balance;
-
-    public UUID getId() {
-        return id;
-    }
-
-    public CustomerPojo setId(UUID id) {
-        this.id = id;
-        return this;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public String getPass() {
-        return pass;
-    }
-
-    public int getBalance() {
-        return balance;
-    }
-
-    public CustomerPojo setFirstName(String firstName) {
-        this.firstName = firstName;
-        return this;
-    }
-
-    public CustomerPojo setLastName(String lastName) {
-        this.lastName = lastName;
-        return this;
-    }
-
-    public CustomerPojo setLogin(String login) {
-        this.login = login;
-        return this;
-    }
-
-    public CustomerPojo setPass(String pass) {
-        this.pass = pass;
-        return this;
-    }
-
-    public CustomerPojo setBalance(int balance) {
-        this.balance = balance;
-        return this;
-    }
+    public int balance;
 }

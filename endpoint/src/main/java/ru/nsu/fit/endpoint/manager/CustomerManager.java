@@ -26,9 +26,9 @@ public class CustomerManager extends ParentManager {
     public CustomerPojo createCustomer(CustomerPojo customer) {
         Validate.notNull(customer, "Argument 'customerData' is null.");
 
-        Validate.notNull(customer.getPass());
-        Validate.isTrue(customer.getPass().length() >= 6 && customer.getPass().length() < 13, "Password's length should be more or equal 6 symbols and less or equal 12 symbols.");
-        Validate.isTrue(!customer.getPass().equalsIgnoreCase("123qwe"), "Password is easy.");
+        Validate.notNull(customer.pass);
+        Validate.isTrue(customer.pass.length() >= 6 && customer.pass.length() < 13, "Password's length should be more or equal 6 symbols and less or equal 12 symbols.");
+        Validate.isTrue(!customer.pass.equalsIgnoreCase("123qwe"), "Password is easy.");
 
         // TODO: необходимо дописать дополнительные проверки
 

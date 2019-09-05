@@ -20,6 +20,8 @@ import javax.ws.rs.ext.Provider;
 
 import org.apache.commons.lang.StringUtils;
 import org.glassfish.jersey.internal.util.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.nsu.fit.endpoint.shared.Globals;
 
 
@@ -34,6 +36,8 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
     private static final String AUTHORIZATION_PROPERTY = "Authorization";
     private static final String AUTHENTICATION_SCHEME = "Basic";
+
+    private Logger logger = LoggerFactory.getLogger(AuthenticationFilter.class);
 
     @Override
     public void filter(ContainerRequestContext requestContext) {
@@ -69,8 +73,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
             }
 
             // verifying Username and password
-            System.out.println("User: " + username);
-            System.out.println("Pass: " + password);
+            logger.debug(String.format("User: '%s', Pass: '%s'.", username, password));
 
             //Verify user access
             if (method.isAnnotationPresent(RolesAllowed.class)) {
@@ -90,7 +93,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         String userRole = Globals.UNKNOWN_ROLE;
 
         if (StringUtils.equals(username, Globals.ADMIN_LOGIN) && StringUtils.equals(password, Globals.ADMIN_PASS)) {
-            System.out.println("Role is admin");
+            logger.debug("Role is admin");
             userRole = Globals.ADMIN_ROLE;
         }
 

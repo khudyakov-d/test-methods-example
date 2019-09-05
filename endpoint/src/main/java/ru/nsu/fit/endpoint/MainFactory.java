@@ -14,11 +14,11 @@ public class MainFactory {
     private SubscriptionManager subscriptionManager;
 
     public MainFactory() {
-        DBService dbService = new DBService(LoggerFactory.getLogger("DB_LOG"));
+        DBService dbService = new DBService(LoggerFactory.getLogger(DBService.class));
 
-        customerManager = new CustomerManager(dbService, LoggerFactory.getLogger("CUSTOMER_MANAGER_LOG"));
-        planManager = new PlanManager(dbService, LoggerFactory.getLogger("PLAN_MANAGER_LOG"));
-        subscriptionManager = new SubscriptionManager(dbService, LoggerFactory.getLogger("SUBSCRIPTION_MANAGER_LOG"));
+        customerManager = new CustomerManager(dbService, LoggerFactory.getLogger(CustomerManager.class));
+        planManager = new PlanManager(dbService, LoggerFactory.getLogger(PlanManager.class));
+        subscriptionManager = new SubscriptionManager(dbService, LoggerFactory.getLogger(SubscriptionManager.class));
     }
 
     public static MainFactory getInstance() {
