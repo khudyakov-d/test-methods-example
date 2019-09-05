@@ -3,14 +3,14 @@ package ru.nsu.fit.endpoint.manager;
 import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
-import ru.nsu.fit.endpoint.database.DBService;
-import ru.nsu.fit.endpoint.database.data.Customer;
+import ru.nsu.fit.endpoint.database.IDBService;
+import ru.nsu.fit.endpoint.database.data.CustomerPojo;
 
 import java.util.List;
 import java.util.UUID;
 
 public class CustomerManager extends ParentManager {
-    public CustomerManager(DBService dbService, Logger flowLog) {
+    public CustomerManager(IDBService dbService, Logger flowLog) {
         super(dbService, flowLog);
     }
 
@@ -23,7 +23,7 @@ public class CustomerManager extends ParentManager {
      * pass - длина от 6 до 12 символов включительно, не должен быть простым (123qwe или 1q2w3e), не должен содержать части login, firstName, lastName
      * money - должно быть равно 0.
      */
-    public Customer createCustomer(Customer customer) {
+    public CustomerPojo createCustomer(CustomerPojo customer) {
         Validate.notNull(customer, "Argument 'customerData' is null.");
 
         Validate.notNull(customer.getPass());
@@ -38,7 +38,7 @@ public class CustomerManager extends ParentManager {
     /**
      * Метод возвращает список объектов типа customer.
      */
-    public List<Customer> getCustomers() {
+    public List<CustomerPojo> getCustomers() {
         return dbService.getCustomers();
     }
 
@@ -47,7 +47,7 @@ public class CustomerManager extends ParentManager {
      * Метод обновляет объект типа Customer.
      * Можно обновить только firstName и lastName.
      */
-    public Customer updateCustomer(Customer customer) {
+    public CustomerPojo updateCustomer(CustomerPojo customer) {
         throw new NotImplementedException("Please implement the method.");
     }
 
@@ -59,7 +59,7 @@ public class CustomerManager extends ParentManager {
      * Метод добавляет к текущему баласу amount.
      * amount - должен быть строго больше нуля.
      */
-    public Customer topUpBalance(UUID customerId, int amount) {
+    public CustomerPojo topUpBalance(UUID customerId, int amount) {
         throw new NotImplementedException("Please implement the method.");
     }
 }

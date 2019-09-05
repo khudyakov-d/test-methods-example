@@ -1,14 +1,14 @@
 package ru.nsu.fit.endpoint.manager;
 
 import org.slf4j.Logger;
-import ru.nsu.fit.endpoint.database.DBService;
+import ru.nsu.fit.endpoint.database.IDBService;
 
 public class ParentManager {
-    protected DBService dbService;
-    protected Logger flowLog;
+    protected IDBService dbService;
+    protected Logger log;
 
-    public ParentManager(DBService dbService, Logger flowLog) {
+    public ParentManager(IDBService dbService, Logger log) {
         this.dbService = dbService;
-        this.flowLog = flowLog;
+        this.log = log;
     }
 }

@@ -2,7 +2,7 @@ package ru.nsu.fit.endpoint.rest;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import ru.nsu.fit.endpoint.MainFactory;
-import ru.nsu.fit.endpoint.database.data.Customer;
+import ru.nsu.fit.endpoint.database.data.CustomerPojo;
 import ru.nsu.fit.endpoint.database.data.HealthCheckPojo;
 import ru.nsu.fit.endpoint.database.data.RolePojo;
 import ru.nsu.fit.endpoint.shared.Globals;
@@ -43,7 +43,7 @@ public class RestService {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCustomers(@DefaultValue("") @QueryParam("login") String customerLogin) {
         try {
-            List<Customer> customers = MainFactory.getInstance()
+            List<CustomerPojo> customers = MainFactory.getInstance()
                     .getCustomerManager()
                     .getCustomers().stream()
                     .filter(x -> customerLogin.isEmpty() || x.getLogin().equals(customerLogin))
@@ -62,10 +62,10 @@ public class RestService {
     public Response createCustomer(String customerDataJson) {
         try {
             // convert json to object
-            Customer customerData = JsonMapper.fromJson(customerDataJson, Customer.class);
+            CustomerPojo customerData = JsonMapper.fromJson(customerDataJson, CustomerPojo.class);
 
             // create new customer
-            Customer customer = MainFactory.getInstance().getCustomerManager().createCustomer(customerData);
+            CustomerPojo customer = MainFactory.getInstance().getCustomerManager().createCustomer(customerData);
 
             // send the answer
             return Response.ok().entity(JsonMapper.toJson(customer, true)).build();

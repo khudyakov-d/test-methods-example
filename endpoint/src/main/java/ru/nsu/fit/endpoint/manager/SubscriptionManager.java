@@ -3,13 +3,14 @@ package ru.nsu.fit.endpoint.manager;
 import org.apache.commons.lang.NotImplementedException;
 import org.slf4j.Logger;
 import ru.nsu.fit.endpoint.database.DBService;
+import ru.nsu.fit.endpoint.database.IDBService;
 import ru.nsu.fit.endpoint.database.data.Subscription;
 
 import java.util.List;
 import java.util.UUID;
 
 public class SubscriptionManager extends ParentManager {
-    public SubscriptionManager(DBService dbService, Logger flowLog) {
+    public SubscriptionManager(IDBService dbService, Logger flowLog) {
         super(dbService, flowLog);
     }
 

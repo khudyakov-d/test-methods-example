@@ -2,14 +2,14 @@ package ru.nsu.fit.endpoint.database;
 
 import jersey.repackaged.com.google.common.collect.Lists;
 import org.slf4j.Logger;
-import ru.nsu.fit.endpoint.database.data.Customer;
+import ru.nsu.fit.endpoint.database.data.CustomerPojo;
 import ru.nsu.fit.endpoint.database.data.Plan;
 
 import java.sql.*;
 import java.util.List;
 import java.util.UUID;
 
-public class DBService {
+public class DBService implements IDBService{
     // Constants
     private static final String INSERT_CUSTOMER = "INSERT INTO CUSTOMER(id, first_name, last_name, login, pass, balance) values ('%s', '%s', '%s', '%s', '%s', %s)";
     private static final String INSERT_SUBSCRIPTION = "INSERT INTO SUBSCRIPTION(id, customer_id, plan_id) values ('%s', '%s', '%s')";
@@ -27,7 +27,7 @@ public class DBService {
         init();
     }
 
-    public Customer createCustomer(Customer customerData) {
+    public CustomerPojo createCustomer(CustomerPojo customerData) {
         synchronized (generalMutex) {
             logger.info(String.format("Method 'createCustomer' was called with data: '%s'", customerData));
 
@@ -51,16 +51,16 @@ public class DBService {
         }
     }
 
-    public List<Customer> getCustomers() {
+    public List<CustomerPojo> getCustomers() {
         synchronized (generalMutex) {
             logger.info("Method 'getCustomers' was called.");
 
             try {
                 Statement statement = connection.createStatement();
                 ResultSet rs = statement.executeQuery(SELECT_CUSTOMERS);
-                List<Customer> result = Lists.newArrayList();
+                List<CustomerPojo> result = Lists.newArrayList();
                 while (rs.next()) {
-                    Customer customerData = new Customer()
+                    CustomerPojo customerData = new CustomerPojo()
                             .setFirstName(rs.getString(2))
                             .setLastName(rs.getString(3))
                             .setLogin(rs.getString(4))

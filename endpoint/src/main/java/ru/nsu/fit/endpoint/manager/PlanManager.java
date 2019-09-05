@@ -3,13 +3,14 @@ package ru.nsu.fit.endpoint.manager;
 import org.apache.commons.lang.NotImplementedException;
 import org.slf4j.Logger;
 import ru.nsu.fit.endpoint.database.DBService;
+import ru.nsu.fit.endpoint.database.IDBService;
 import ru.nsu.fit.endpoint.database.data.Plan;
 
 import java.util.List;
 import java.util.UUID;
 
 public class PlanManager extends ParentManager {
-    public PlanManager(DBService dbService, Logger flowLog) {
+    public PlanManager(IDBService dbService, Logger flowLog) {
         super(dbService, flowLog);
     }
 

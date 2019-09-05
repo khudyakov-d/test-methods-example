@@ -1,6 +1,5 @@
 package ru.nsu.fit.endpoint;
 
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.nsu.fit.endpoint.database.DBService;
 import ru.nsu.fit.endpoint.manager.CustomerManager;
@@ -10,20 +9,16 @@ import ru.nsu.fit.endpoint.manager.SubscriptionManager;
 public class MainFactory {
     private static MainFactory instance;
 
-    private Logger logger;
-    private DBService dbService;
     private CustomerManager customerManager;
     private PlanManager planManager;
     private SubscriptionManager subscriptionManager;
 
     public MainFactory() {
-        logger = LoggerFactory.getLogger("FLOW_LOG");
+        DBService dbService = new DBService(LoggerFactory.getLogger("DB_LOG"));
 
-        dbService = new DBService(logger);
-
-        customerManager = new CustomerManager(dbService, logger);
-        planManager = new PlanManager(dbService, logger);
-        subscriptionManager = new SubscriptionManager(dbService, logger);
+        customerManager = new CustomerManager(dbService, LoggerFactory.getLogger("CUSTOMER_MANAGER_LOG"));
+        planManager = new PlanManager(dbService, LoggerFactory.getLogger("PLAN_MANAGER_LOG"));
+        subscriptionManager = new SubscriptionManager(dbService, LoggerFactory.getLogger("SUBSCRIPTION_MANAGER_LOG"));
     }
 
     public static MainFactory getInstance() {
@@ -33,14 +28,6 @@ public class MainFactory {
             }
             return instance;
         }
-    }
-
-    public Logger getLogger() {
-        return logger;
-    }
-
-    public DBService getDbService() {
-        return dbService;
     }
 
     public CustomerManager getCustomerManager() {
