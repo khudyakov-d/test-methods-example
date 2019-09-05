@@ -3,9 +3,9 @@ package ru.nsu.fit.endpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.nsu.fit.endpoint.database.DBService;
-import ru.nsu.fit.endpoint.database.manager.CustomerManager;
-import ru.nsu.fit.endpoint.database.manager.PlanManager;
-import ru.nsu.fit.endpoint.database.manager.SubscriptionManager;
+import ru.nsu.fit.endpoint.manager.CustomerManager;
+import ru.nsu.fit.endpoint.manager.PlanManager;
+import ru.nsu.fit.endpoint.manager.SubscriptionManager;
 
 public class MainFactory {
     private static MainFactory instance;
@@ -28,8 +28,9 @@ public class MainFactory {
 
     public static MainFactory getInstance() {
         synchronized (MainFactory.class) {
-            if (instance == null)
+            if (instance == null) {
                 instance = new MainFactory();
+            }
             return instance;
         }
     }

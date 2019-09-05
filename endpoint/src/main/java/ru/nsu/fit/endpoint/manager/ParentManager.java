@@ -1,4 +1,4 @@
-package ru.nsu.fit.endpoint.database.manager;
+package ru.nsu.fit.endpoint.manager;
 
 import org.slf4j.Logger;
 import ru.nsu.fit.endpoint.database.DBService;

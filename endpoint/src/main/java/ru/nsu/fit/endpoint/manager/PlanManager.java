@@ -1,4 +1,4 @@
-package ru.nsu.fit.endpoint.database.manager;
+package ru.nsu.fit.endpoint.manager;
 
 import org.apache.commons.lang.NotImplementedException;
 import org.slf4j.Logger;

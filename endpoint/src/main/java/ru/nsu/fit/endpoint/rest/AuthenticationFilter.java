@@ -29,9 +29,6 @@ import ru.nsu.fit.endpoint.shared.Globals;
  */
 @Provider
 public class AuthenticationFilter implements ContainerRequestFilter {
-    public static final String ADMIN = "ADMIN";
-    public static final String UNKNOWN = "UNKNOWN";
-
     @Context
     private ResourceInfo resourceInfo;
 
@@ -84,18 +81,17 @@ public class AuthenticationFilter implements ContainerRequestFilter {
                 if (!isUserAllowed(username, password, rolesSet, requestContext)) {
                     Response ACCESS_DENIED = Response.status(Response.Status.UNAUTHORIZED).entity("You cannot access this resource").build();
                     requestContext.abortWith(ACCESS_DENIED);
-                    return;
                 }
             }
         }
     }
 
     private boolean isUserAllowed(final String username, final String password, final Set<String> rolesSet, ContainerRequestContext requestContext) {
-        String userRole = UNKNOWN;
+        String userRole = Globals.UNKNOWN_ROLE;
 
         if (StringUtils.equals(username, Globals.ADMIN_LOGIN) && StringUtils.equals(password, Globals.ADMIN_PASS)) {
             System.out.println("Role is admin");
-            userRole = ADMIN;
+            userRole = Globals.ADMIN_ROLE;
         }
 
         requestContext.setProperty("ROLE", userRole);
