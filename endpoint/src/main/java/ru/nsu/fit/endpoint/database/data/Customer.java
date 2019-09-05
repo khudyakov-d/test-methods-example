@@ -1,4 +1,4 @@
-package ru.nsu.fit.endpoint.service.database.data;
+package ru.nsu.fit.endpoint.database.data;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

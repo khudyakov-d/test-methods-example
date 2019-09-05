@@ -1,11 +1,11 @@
-package ru.nsu.fit.endpoint.service;
+package ru.nsu.fit.endpoint;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.nsu.fit.endpoint.service.database.DBService;
-import ru.nsu.fit.endpoint.service.manager.CustomerManager;
-import ru.nsu.fit.endpoint.service.manager.PlanManager;
-import ru.nsu.fit.endpoint.service.manager.SubscriptionManager;
+import ru.nsu.fit.endpoint.database.DBService;
+import ru.nsu.fit.endpoint.database.manager.CustomerManager;
+import ru.nsu.fit.endpoint.database.manager.PlanManager;
+import ru.nsu.fit.endpoint.database.manager.SubscriptionManager;
 
 public class MainFactory {
     private static MainFactory instance;

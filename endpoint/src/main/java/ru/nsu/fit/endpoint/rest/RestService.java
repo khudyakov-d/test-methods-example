@@ -1,9 +1,11 @@
 package ru.nsu.fit.endpoint.rest;
 
-import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.exception.ExceptionUtils;
-import ru.nsu.fit.endpoint.service.MainFactory;
-import ru.nsu.fit.endpoint.service.database.data.Customer;
+import ru.nsu.fit.endpoint.MainFactory;
+import ru.nsu.fit.endpoint.database.data.Customer;
+import ru.nsu.fit.endpoint.database.data.HealthCheckPojo;
+import ru.nsu.fit.endpoint.database.data.RolePojo;
+import ru.nsu.fit.endpoint.shared.Globals;
 import ru.nsu.fit.endpoint.shared.JsonMapper;
 
 import javax.annotation.security.RolesAllowed;
@@ -17,27 +19,35 @@ import java.util.stream.Collectors;
 
 @Path("")
 public class RestService {
-    @RolesAllowed({AuthenticationFilter.UNKNOWN, AuthenticationFilter.ADMIN})
+    @RolesAllowed({ Globals.UNKNOWN_ROLE, Globals.ADMIN_ROLE })
     @GET
     @Path("/health_check")
     public Response healthCheck() {
-        return Response.ok().entity("{\"status\": \"OK\"}").build();
+        return Response.ok().entity(JsonMapper.toJson(new HealthCheckPojo(), true)).build();
     }
 
-    @RolesAllowed({AuthenticationFilter.UNKNOWN , AuthenticationFilter.ADMIN})
+    @RolesAllowed({ Globals.UNKNOWN_ROLE , Globals.ADMIN_ROLE })
     @GET
-    @Path("/get_role")
+    @Path("/role")
     public Response getRole(@Context ContainerRequestContext crc) {
-        return Response.ok().entity(String.format("{\"role\": \"%s\"}", crc.getProperty("ROLE"))).build();
+        RolePojo rolePojo = new RolePojo();
+        rolePojo.role = crc.getProperty("ROLE").toString();
+
+        return Response.ok().entity(JsonMapper.toJson(rolePojo, true)).build();
     }
 
-    @RolesAllowed(AuthenticationFilter.ADMIN)
+    // Example request: ../customers?login='john_wick@gmail.com'
+    @RolesAllowed(Globals.ADMIN_ROLE)
     @GET
-    @Path("/get_customers")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response getCustomers() {
+    @Path("/customers")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getCustomers(@DefaultValue("") @QueryParam("login") String customerLogin) {
         try {
-            List<Customer> customers = MainFactory.getInstance().getCustomerManager().getCustomers();
+            List<Customer> customers = MainFactory.getInstance()
+                    .getCustomerManager()
+                    .getCustomers().stream()
+                    .filter(x -> customerLogin.isEmpty() || x.getLogin().equals(customerLogin))
+                    .collect(Collectors.toList());
 
             return Response.ok().entity(JsonMapper.toJson(customers, true)).build();
         } catch (IllegalArgumentException ex) {
@@ -45,9 +55,9 @@ public class RestService {
         }
     }
 
-    @RolesAllowed(AuthenticationFilter.ADMIN)
+    @RolesAllowed(Globals.ADMIN_ROLE)
     @POST
-    @Path("/create_customer")
+    @Path("/customers")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createCustomer(String customerDataJson) {
         try {
@@ -59,29 +69,6 @@ public class RestService {
 
             // send the answer
             return Response.ok().entity(JsonMapper.toJson(customer, true)).build();
-        } catch (IllegalArgumentException ex) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage() + "\n" + ExceptionUtils.getFullStackTrace(ex)).build();
-        }
-    }
-
-    @RolesAllowed(AuthenticationFilter.ADMIN)
-    @GET
-    @Path("/get_customer_id/{customer_login}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getCustomerId(@PathParam("customer_login") String customerLogin) {
-        try {
-            List<Customer> customers = MainFactory
-                    .getInstance()
-                    .getCustomerManager()
-                    .getCustomers()
-                    .stream()
-                    .filter(x -> x.getLogin().equals(customerLogin))
-                    .collect(Collectors.toList());
-
-            Validate.isTrue(customers.size() == 1);
-
-            return Response.ok().entity(JsonMapper.toJson(customers.get(0), true)).build();
         } catch (IllegalArgumentException ex) {
             return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage() + "\n" + ExceptionUtils.getFullStackTrace(ex)).build();
         }

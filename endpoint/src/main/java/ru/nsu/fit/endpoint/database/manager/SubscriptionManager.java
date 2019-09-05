@@ -1,9 +1,9 @@
-package ru.nsu.fit.endpoint.service.manager;
+package ru.nsu.fit.endpoint.database.manager;
 
 import org.apache.commons.lang.NotImplementedException;
 import org.slf4j.Logger;
-import ru.nsu.fit.endpoint.service.database.DBService;
-import ru.nsu.fit.endpoint.service.database.data.Subscription;
+import ru.nsu.fit.endpoint.database.DBService;
+import ru.nsu.fit.endpoint.database.data.Subscription;
 
 import java.util.List;
 import java.util.UUID;

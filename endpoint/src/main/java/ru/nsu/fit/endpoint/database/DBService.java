@@ -1,9 +1,9 @@
-package ru.nsu.fit.endpoint.service.database;
+package ru.nsu.fit.endpoint.database;
 
 import jersey.repackaged.com.google.common.collect.Lists;
 import org.slf4j.Logger;
-import ru.nsu.fit.endpoint.service.database.data.Customer;
-import ru.nsu.fit.endpoint.service.database.data.Plan;
+import ru.nsu.fit.endpoint.database.data.Customer;
+import ru.nsu.fit.endpoint.database.data.Plan;
 
 import java.sql.*;
 import java.util.List;
