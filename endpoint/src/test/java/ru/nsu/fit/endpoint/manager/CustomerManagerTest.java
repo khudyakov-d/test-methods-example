@@ -1,10 +1,11 @@
 package ru.nsu.fit.endpoint.manager;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.slf4j.Logger;
 import ru.nsu.fit.endpoint.database.IDBService;
 import ru.nsu.fit.endpoint.database.data.CustomerPojo;
@@ -13,17 +14,14 @@ import java.util.UUID;
 
 import static org.mockito.Mockito.*;
 
-public class CustomerManagerTest {
+class CustomerManagerTest {
     private IDBService dbService;
     private CustomerManager customerManager;
 
     private CustomerPojo createCustomerInput;
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
-    @Before
-    public void before() {
+    @BeforeEach
+    void init() {
         // create stubs for the test's class
         dbService = mock(IDBService.class);
         Logger logger = mock(Logger.class);
@@ -33,7 +31,7 @@ public class CustomerManagerTest {
     }
 
     @Test
-    public void testCreateCustomer() {
+    void testCreateCustomer() {
         // настраиваем mock.
         createCustomerInput = new CustomerPojo();
         createCustomerInput.firstName = "John";
@@ -56,7 +54,7 @@ public class CustomerManagerTest {
         CustomerPojo customer = customerManager.createCustomer(createCustomerInput);
 
         // Проверяем результат выполенния метода
-        Assert.assertEquals(customer.id, createCustomerOutput.id);
+        assertEquals(customer.id, createCustomerOutput.id);
 
         // Проверяем, что метод по созданию Customer был вызван ровно 1 раз с определенными аргументами
         verify(dbService, times(1)).createCustomer(createCustomerInput);
@@ -68,21 +66,23 @@ public class CustomerManagerTest {
     // Как не надо писать тест...
     // Используйте expected exception аннотации или expected exception rule...
     @Test
-    public void testCreateCustomerWithNullArgument_Wrong() {
+    void testCreateCustomerWithNullArgument_Wrong() {
         try {
             customerManager.createCustomer(null);
         } catch (IllegalArgumentException ex) {
-            Assert.assertEquals("Argument 'customerData' is null.", ex.getMessage());
+            assertEquals("Argument 'customerData' is null.", ex.getMessage());
         }
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testCreateCustomerWithNullArgument_Right() {
-        customerManager.createCustomer(null);
+    @Test
+    void testCreateCustomerWithNullArgument_Right() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () ->
+                customerManager.createCustomer(null));
+        assertEquals("Argument 'customerData' is null.", exception.getMessage());
     }
 
     @Test
-    public void testCreateCustomerWithShortPassword() {
+    void testCreateCustomerWithShortPassword() {
         createCustomerInput = new CustomerPojo();
         createCustomerInput.firstName = "John";
         createCustomerInput.lastName = "Wick";
@@ -90,9 +90,7 @@ public class CustomerManagerTest {
         createCustomerInput.pass = "123qwe";
         createCustomerInput.balance = 0;
 
-        thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage("Password is easy.");
-
-        customerManager.createCustomer(createCustomerInput);
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> customerManager.createCustomer(createCustomerInput));
+        assertEquals("Password is easy.", exception.getMessage());
     }
 }
