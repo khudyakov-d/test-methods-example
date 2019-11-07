@@ -13,7 +13,7 @@ $(document).ready(function(){
                 alert("Email or password is empty");
             } else {
                 $.post({
-                    url: 'rest/create_customer',
+                    url: 'rest/customers',
                     headers: {
                         'Authorization': 'Basic ' + btoa('admin' + ':' + 'setup'),
                         'Content-Type': 'application/json'

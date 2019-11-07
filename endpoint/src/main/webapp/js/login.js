@@ -3,13 +3,13 @@ $(document).ready(function(){
         var email = $("#email").val();
         var password = $("#password").val();
         // Checking for blank fields.
-        if(email =='' || password =='') {
+        if(email ==='' || password ==='') {
             $('input[type="text"],input[type="password"]').css("border","2px solid red");
             $('input[type="text"],input[type="password"]').css("box-shadow","0 0 3px red");
             alert("Email or password is empty");
         } else {
             $.get({
-                url: 'rest/get_role',
+                url: 'rest/role',
                 headers: {
                     'Authorization': 'Basic ' + btoa(email + ':' + password)
                 }

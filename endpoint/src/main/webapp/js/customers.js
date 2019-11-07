@@ -4,20 +4,17 @@ $(document).ready(function(){
     });
 
     $.get({
-        url: 'rest/get_customers',
+        url: 'rest/customers',
         headers: {
             'Authorization': 'Basic ' + btoa('admin' + ':' + 'setup')
         }
     }).done(function(data) {
-        var json = $.parseJSON(data);
-
-        var dataSet = []
-        for(var i = 0; i < json.length; i++) {
-            var obj = json[i];
+        var dataSet = [];
+        for(var i = 0; i < data.length; i++) {
+            var obj = data[i];
             dataSet.push([obj.firstName, obj.lastName, obj.login, obj.pass, obj.balance])
         }
 
-        //$("#customer_list_id").html(data);
         $('#customer_list_id')
             .DataTable({
                 data: dataSet,
