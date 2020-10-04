@@ -43,7 +43,7 @@ class AddCustomerPage extends React.Component {
             history.push("/admin");
         }
 
-        // Лабораторная_2: обратите внимание на то что пароль не скрыт.
+        // Лабораторная *: обратите внимание на то что пароль не скрыт.
         // <input type="password" name="password" value={this.state.password} onChange={this.handleChange} />
         return (
             <form onSubmit={this.handleSubmit}>

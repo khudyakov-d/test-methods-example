@@ -14,7 +14,9 @@ import java.util.UUID;
 
 import static org.mockito.Mockito.*;
 
+// Лабораторная 2: покрыть юнит тестами класс CustomerManager на 100%.
 class CustomerManagerTest {
+    private Logger logger;
     private IDBService dbService;
     private CustomerManager customerManager;
 
@@ -22,11 +24,12 @@ class CustomerManagerTest {
 
     @BeforeEach
     void init() {
-        // create stubs for the test's class
+        // Создаем mock объекты.
         dbService = mock(IDBService.class);
-        Logger logger = mock(Logger.class);
+        logger = mock(Logger.class);
 
-        // create the test's class
+        // Создаем класс, методы которого будем тестировать,
+        // и передаем ему наши mock объекты.
         customerManager = new CustomerManager(dbService, logger);
     }
 
@@ -64,13 +67,12 @@ class CustomerManagerTest {
     }
 
     // Как не надо писать тест...
-    // Используйте expected exception аннотации или expected exception rule...
     @Test
     void testCreateCustomerWithNullArgument_Wrong() {
         try {
             customerManager.createCustomer(null);
         } catch (IllegalArgumentException ex) {
-            assertEquals("Argument 'customerData' is null.", ex.getMessage());
+            assertEquals("Argument 'customer' is null.", ex.getMessage());
         }
     }
 
@@ -78,7 +80,7 @@ class CustomerManagerTest {
     void testCreateCustomerWithNullArgument_Right() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
                 customerManager.createCustomer(null));
-        assertEquals("Argument 'customerData' is null.", exception.getMessage());
+        assertEquals("Argument 'customer' is null.", exception.getMessage());
     }
 
     @Test
@@ -91,6 +93,6 @@ class CustomerManagerTest {
         createCustomerInput.balance = 0;
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> customerManager.createCustomer(createCustomerInput));
-        assertEquals("Password is easy.", exception.getMessage());
+        assertEquals("Password is very easy.", exception.getMessage());
     }
 }

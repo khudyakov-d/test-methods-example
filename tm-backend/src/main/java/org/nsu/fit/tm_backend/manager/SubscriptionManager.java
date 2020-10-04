@@ -30,8 +30,6 @@ public class SubscriptionManager extends ParentManager {
 
     /**
      * Возвращает список подписок для указанного customer'а.
-     *
-     * Лабораторная_2: Покрыть данный метод юнит тестами.
      */
     public List<SubscriptionPojo> getSubscriptions(UUID customerId) {
         Map<UUID, PlanPojo> planIdToPlan = dbService.getPlans().stream()
