@@ -63,6 +63,7 @@ def api_suite = project.hasProperty("api")
 def ui_suite = project.hasProperty("ui")
 
 test {
+    ignoreFailures = true
     useTestNG() {
         dependsOn cleanTest
         useDefaultListeners = true
