@@ -3,14 +3,14 @@ package org.nsu.fit.tests.ui;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
-import org.openqa.selenium.By;
+import org.nsu.fit.tests.ui.screen.LoginScreen;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.nsu.fit.services.browser.Browser;
 import org.nsu.fit.services.browser.BrowserService;
 
-public class AcceptanceTest {
+public class CreateCustomerTest {
     private Browser browser = null;
 
     @BeforeClass
@@ -22,15 +22,16 @@ public class AcceptanceTest {
     @Severity(SeverityLevel.BLOCKER)
     @Feature("Create customer feature")
     public void createCustomer() {
-        browser.waitForElement(By.id("email"));
+        new LoginScreen(browser)
+                .loginAsAdmin()
+                .createCustomer()
+                .fillEmail("john_wick@example.com")
+                .fillPassword("Baba_Jaga")
+                .fillFirstName("John")
+                .fillLastName("Wick");
 
-        browser.getElement(By.id("email")).sendKeys("admin");
-        browser.getElement(By.id("password")).sendKeys("setup");
-
-        browser.getElement(By.xpath("//button[@type = 'submit']")).click();
-
-        // Лабораторная 4: Дописать заполнение полей для создания нового customer.
-        // Проверить что customer создан с ранее переданными полями.
+        // Лабораторная 4: Проверить что customer создан с ранее переданными полями.
+        // Решить проблему с генерацией случайных данных.
     }
 
     @AfterClass

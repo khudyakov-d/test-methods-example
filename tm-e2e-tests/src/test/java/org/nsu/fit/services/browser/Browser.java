@@ -5,11 +5,11 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.Closeable;
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -72,36 +72,34 @@ public class Browser implements Closeable {
         return waitForElement(element, 10);
     }
 
-    public Browser waitForElement(final By element, int timeoutSec) {
+    public Browser waitForElement(By element, int timeoutSec) {
+        makeScreenshot();
         WebDriverWait wait = new WebDriverWait(webDriver, timeoutSec);
-        //wait.until(ExpectedConditions.visibilityOfElementLocated(element));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(element));
+        makeScreenshot();
         return this;
     }
 
     public Browser click(By element) {
+        makeScreenshot();
         webDriver.findElement(element).click();
         return this;
     }
 
     public Browser typeText(By element, String text) {
+        makeScreenshot();
         webDriver.findElement(element).sendKeys(text);
         return this;
     }
 
-    public WebElement getElement(By element) {
-        return webDriver.findElement(element);
-    }
-
     public String getValue(By element) {
-        return getElement(element).getAttribute("value");
-    }
-
-    public List<WebElement> getElements(By element) {
-        return webDriver.findElements(element);
+        makeScreenshot();
+        return webDriver.findElement(element).getAttribute("value");
     }
 
     public boolean isElementPresent(By element) {
-        return getElements(element).size() != 0;
+        makeScreenshot();
+        return webDriver.findElements(element).size() != 0;
     }
 
     @Attachment(value = "Page screenshot", type = "image/png")
