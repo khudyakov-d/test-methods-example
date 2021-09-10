@@ -18,7 +18,7 @@ import javax.ws.rs.core.MediaType;
 import java.util.Arrays;
 
 public class RestClient {
-    private static final String REST_URI = "http://localhost:8080/tm-backend/rest";
+    private static final String REST_URI = "http://localhost:8090/tm-backend/rest";
 
     private static Client client = ClientBuilder.newClient(new ClientConfig().register(RestClientLogFilter.class));
 

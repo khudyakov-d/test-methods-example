@@ -1,6 +1,5 @@
 package org.nsu.fit.tm_backend.manager.auth;
 
-import org.nsu.fit.tm_backend.shared.JsonMapper;
 import org.slf4j.Logger;
 import org.nsu.fit.tm_backend.MainFactory;
 import org.nsu.fit.tm_backend.database.IDBService;
@@ -21,12 +20,17 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ * Лабораторная *: Исследуйте данный класс, подумайте какие потенциальные проблемы он содержит.
+ */
 public class AuthenticationTokenManager extends ParentManager {
     public AuthenticationTokenManager(IDBService dbService, Logger flowLog) {
         super(dbService, flowLog);
     }
 
     public AccountTokenPojo authenticate(CredentialsPojo credentialsPojo) {
+        log.info("Credentials: " + credentialsPojo.toString());
+
         AccountTokenPojo accountTokenPojo = new AccountTokenPojo();
         if (credentialsPojo.login.equalsIgnoreCase("admin")
                 && credentialsPojo.pass.equalsIgnoreCase("setup")) {

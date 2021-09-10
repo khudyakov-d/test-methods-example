@@ -1,12 +1,13 @@
-# Create user (execute under root)
-CREATE USER 'user'@'localhost' IDENTIFIED BY 'user';
-GRANT ALL PRIVILEGES ON *.* TO 'user'@'localhost' WITH GRANT OPTION;
+# Step 1: Create user (execute under root)
+# Note: if you want to see all users: select * from mysql.user;
+CREATE USER 'user'@'%' IDENTIFIED BY 'pass';
+GRANT ALL PRIVILEGES ON *.* TO 'user'@'%' WITH GRANT OPTION;
 
-# Create database (execute under the user)
+# Step 2: Create database (execute under the user)
 CREATE DATABASE testmethods;
 USE testmethods;
 
-# Create tables
+# Step 3: Create tables
 CREATE TABLE `CUSTOMER` (
 	`id` TEXT NOT NULL,
 	`first_name` TEXT NOT NULL,

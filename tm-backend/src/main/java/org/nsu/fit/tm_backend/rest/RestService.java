@@ -3,6 +3,7 @@ package org.nsu.fit.tm_backend.rest;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.nsu.fit.tm_backend.MainFactory;
+import org.nsu.fit.tm_backend.database.DBService;
 import org.nsu.fit.tm_backend.database.data.ContactPojo;
 import org.nsu.fit.tm_backend.database.data.CredentialsPojo;
 import org.nsu.fit.tm_backend.database.data.CustomerPojo;
@@ -13,6 +14,7 @@ import org.nsu.fit.tm_backend.database.data.TopUpBalancePojo;
 import org.nsu.fit.tm_backend.manager.auth.data.AuthenticatedUserDetails;
 import org.nsu.fit.tm_backend.shared.Authority;
 import org.nsu.fit.tm_backend.shared.JsonMapper;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -54,7 +56,14 @@ public class RestService {
     @Produces(MediaType.APPLICATION_JSON)
     @PermitAll
     public Response healthCheck() {
-        return Response.ok().entity(JsonMapper.toJson(new HealthCheckPojo(), true)).build();
+        HealthCheckPojo result = new HealthCheckPojo();
+        try {
+            new DBService(LoggerFactory.getLogger(DBService.class));
+            result.dbStatus = "OK";
+        } catch (Throwable ex) {
+            result.dbStatus = ex.getMessage();
+        }
+        return Response.ok().entity(JsonMapper.toJson(result, true)).build();
     }
 
     @GET

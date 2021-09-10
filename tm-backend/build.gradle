@@ -45,7 +45,6 @@ dependencies {
 
     compile group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
 
-    compile group: 'com.google.code.gson', name: 'gson', version: '2.2.4'
     compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.21'
 
     compile group: 'commons-lang', name: 'commons-lang', version: '2.6'

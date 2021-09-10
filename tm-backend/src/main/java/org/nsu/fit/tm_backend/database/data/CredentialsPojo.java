@@ -10,4 +10,10 @@ public class CredentialsPojo {
 
     @JsonProperty("pass")
     public String pass;
+
+    @Override
+    public String toString() {
+        return "login='" + login + '\'' +
+                ", pass='" + pass + '\'';
+    }
 }

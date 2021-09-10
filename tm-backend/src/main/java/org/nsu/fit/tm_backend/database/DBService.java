@@ -347,24 +347,29 @@ public class DBService implements IDBService{
     }
 
     private void init() {
-        logger.debug("-------- MySQL JDBC Connection Testing ------------");
+        logger.debug("Init JDBC Connection.");
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException ex) {
-            logger.debug("Where is your MySQL JDBC Driver?", ex);
+            logger.debug("MySQL JDBC Driver was not found.", ex);
             throw new RuntimeException(ex);
         }
 
-        logger.debug("MySQL JDBC Driver Registered!");
+        String connStr = "jdbc:mysql://localhost:3306/testmethods?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&useSSL=false";
+        // Note: uncomment below line if you want to use the docker compose.
+        connStr = "jdbc:mysql://mysql_db_container:3306/testmethods?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&useSSL=false";
+        String user = "user";
+        String pass = "pass";
+        logger.debug("MySQL JDBC Driver Registered.");
+
+        logger.debug("Connection string: " + connStr);
+        logger.debug("Connection login: " + user);
+        logger.debug("Connection pass: " + pass);
 
         try {
-            connection = DriverManager
-                    .getConnection(
-                            "jdbc:mysql://localhost:3306/testmethods?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&useSSL=false",
-                            "user",
-                            "user");
+            connection = DriverManager.getConnection(connStr, user, pass);
         } catch (SQLException ex) {
-            logger.error("Connection Failed! Check output console", ex);
+            logger.error("Connection Failed.", ex);
             throw new RuntimeException(ex);
         }
 

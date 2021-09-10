@@ -20,7 +20,5 @@ public class CustomApplication extends ResourceConfig {
         register(AuthenticationFilter.class);
         register(AuthorizationFilter.class);
         register(CORSFilter.class);
-
-        register(GsonMessageBodyHandler.class);
     }
 }

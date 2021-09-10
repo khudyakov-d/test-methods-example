@@ -9,4 +9,7 @@ public class HealthCheckPojo {
 
     @JsonProperty("status")
     public String status;
+
+    @JsonProperty("db_status")
+    public String dbStatus;
 }
