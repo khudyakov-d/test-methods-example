@@ -15,12 +15,11 @@ import javax.ws.rs.client.ClientRequestFilter;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.core.MediaType;
-import java.util.Arrays;
 
 public class RestClient {
-    private static final String REST_URI = "http://localhost:8090/tm-backend/rest";
+    private static final String REST_URI = "http://localhost:8089/tm-backend/rest";
 
-    private static Client client = ClientBuilder.newClient(new ClientConfig().register(RestClientLogFilter.class));
+    private final static Client client = ClientBuilder.newClient(new ClientConfig().register(RestClientLogFilter.class));
 
     public AccountTokenPojo authenticate(String login, String pass) {
         CredentialsPojo credentialsPojo = new CredentialsPojo();
