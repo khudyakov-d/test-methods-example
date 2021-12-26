@@ -1,8 +1,52 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite verbose="1" name="API Tests" annotations="JDK" parallel="tests">
+
     <test name="AuthTest">
         <classes>
             <class name="org.nsu.fit.tests.api.AuthTest" />
+        </classes>
+    </test>
+    <test name="HealthCheckTest">
+        <classes>
+            <class name="org.nsu.fit.tests.api.HealthCheckTest" />
+        </classes>
+    </test>
+    <test name="GetProfileTest">
+        <classes>
+            <class name="org.nsu.fit.tests.api.GetProfileAsAdminTest" />
+            <class name="org.nsu.fit.tests.api.GetProfileAsCustomerTest" />
+        </classes>
+    </test>
+    <test name="GetCustomersTest">
+        <classes>
+            <class name="org.nsu.fit.tests.api.GetCustomersAsAdminTest" />
+        </classes>
+    </test>
+    <test name="DeleteCustomerTest">
+        <classes>
+            <class name="org.nsu.fit.tests.api.DeleteCustomerAsAdminTest" />
+            <class name="org.nsu.fit.tests.api.DeleteCustomersAsCustomerTest" />
+        </classes>
+    </test>
+    <test name="CustomerTopUpPositiveBalanceTest">
+        <classes>
+            <class name="org.nsu.fit.tests.api.CustomerTopUpNegativeBalanceTest" />
+            <class name="org.nsu.fit.tests.api.CustomerTopUpPositiveBalanceTest" />
+        </classes>
+    </test>
+    <test name="CreateAndGetPlanAsAdminTest">
+        <classes>
+            <class name="org.nsu.fit.tests.api.CreateAndGetPlanAsAdminTest" />
+        </classes>
+    </test>
+    <test name="DeletePlanAsAdminTest">
+        <classes>
+            <class name="org.nsu.fit.tests.api.DeletePlanAsAdminTest" />
+        </classes>
+    </test>
+    <test name="CreateAndGetSubscriptionTest">
+        <classes>
+            <class name="org.nsu.fit.tests.api.CreateAndGetSubscriptionTest" />
         </classes>
     </test>
 </suite>

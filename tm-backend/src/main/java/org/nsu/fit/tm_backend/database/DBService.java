@@ -355,9 +355,7 @@ public class DBService implements IDBService{
             throw new RuntimeException(ex);
         }
 
-        String connStr = "jdbc:mysql://localhost:3306/testmethods?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&useSSL=false";
-        // Note: uncomment below line if you want to use the docker compose.
-        //connStr = "jdbc:mysql://mysql_db_container:3306/testmethods?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&useSSL=false";
+        String connStr = "jdbc:mysql://mysql_db_container:3306/testmethods?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&useSSL=false";
         String user = "user";
         String pass = "pass";
         logger.debug("MySQL JDBC Driver Registered.");

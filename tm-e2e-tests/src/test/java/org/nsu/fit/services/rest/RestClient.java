@@ -1,5 +1,7 @@
 package org.nsu.fit.services.rest;
 
+import com.github.javafaker.Faker;
+import org.apache.commons.lang3.StringUtils;
 import org.glassfish.jersey.client.ClientConfig;
 import org.nsu.fit.services.log.Logger;
 import org.nsu.fit.services.rest.data.AccountTokenPojo;
@@ -14,12 +16,19 @@ import javax.ws.rs.client.ClientRequestContext;
 import javax.ws.rs.client.ClientRequestFilter;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.ResponseProcessingException;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class RestClient {
-    // Note: change url if you want to use the docker compose.
-    private static final String REST_URI = "http://localhost:8080/tm-backend/rest";
-    //private static final String REST_URI = "http://localhost:8089/tm-backend/rest";
+
+    private final Faker faker = new Faker();
+
+    private static final String REST_URI = "http://localhost:8089/tm-backend/rest";
 
     private final static Client client = ClientBuilder.newClient(new ClientConfig().register(RestClientLogFilter.class));
 
@@ -37,39 +46,132 @@ public class RestClient {
 
         // Лабораторная 3: Добавить обработку генерацию фейковых имен, фамилий и логинов.
         // * Исследовать этот вопрос более детально, возможно прикрутить специальную библиотеку для генерации фейковых данных.
-        contactPojo.firstName = "John";
-        contactPojo.lastName = "Wick";
-        contactPojo.login = "john_wick@example.com";
+        contactPojo.firstName = faker.name().firstName();
+        contactPojo.lastName = faker.name().lastName();
+        contactPojo.login = UUID.randomUUID() + "@gmail.com";
         contactPojo.pass = "strongpass";
 
         return post("customers", JsonMapper.toJson(contactPojo, true), CustomerPojo.class, accountToken);
     }
 
-    private static <R> R post(String path, String body, Class<R> responseType, AccountTokenPojo accountToken) {
-        // Лабораторная 3: Добавить обработку Responses и Errors. Выводите их в лог.
-        // Подумайте почему в filter нет Response чтобы можно было удобно его сохранить.
-        Invocation.Builder request = client
-                .target(REST_URI)
-                .path(path)
-                .request(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON);
+    public <R> R get(String path,
+                     GenericType<R> responseType,
+                     AccountTokenPojo accountToken,
+                     Map<String, List<Object>> queryParams) {
+
+        Invocation.Builder request = buildRequest(path, queryParams);
 
         if (accountToken != null) {
             request.header("Authorization", "Bearer " + accountToken.token);
         }
 
-        String response = request.post(Entity.entity(body, MediaType.APPLICATION_JSON), String.class);
+        try {
+            Logger.logRequestDetails(path);
+            return request.get(responseType);
+        } catch (ResponseProcessingException ex) {
+            Logger.logError(ex.getResponse().readEntity(String.class));
+            throw ex;
+        } catch (Exception ex) {
+            Logger.logError(ex.getMessage());
+            throw ex;
+        }
+    }
 
-        return JsonMapper.fromJson(response, responseType);
+    public <R> R get(String path, Class<R> responseType,
+                     AccountTokenPojo accountToken,
+                     Map<String, List<Object>> queryParams) {
+
+        Invocation.Builder request = buildRequest(path, queryParams);
+
+        if (accountToken != null) {
+            request.header("Authorization", "Bearer " + accountToken.token);
+        }
+
+        try {
+            Logger.logRequestDetails(path);
+            String response = request.get(String.class);
+            Logger.logResponse(response);
+
+            return JsonMapper.fromJson(response, responseType);
+        } catch (ResponseProcessingException ex) {
+            Logger.logError(ex.getResponse().readEntity(String.class));
+            throw ex;
+        } catch (Exception ex) {
+            Logger.logError(ex.getMessage());
+            throw ex;
+        }
+    }
+
+    public void delete(String path, AccountTokenPojo accountToken) {
+        Invocation.Builder request = buildRequest(path, null);
+
+        if (accountToken != null) {
+            request.header("Authorization", "Bearer " + accountToken.token);
+        }
+
+        try {
+            Logger.logRequestDetails(path);
+            String response = request.delete(String.class);
+            Logger.logResponse(response);
+        } catch (ResponseProcessingException ex) {
+            Logger.logError(ex.getResponse().readEntity(String.class));
+            throw ex;
+        } catch (Exception ex) {
+            Logger.logError(ex.getMessage());
+            throw ex;
+        }
+    }
+
+    public <R> R post(String path, String body, Class<R> responseType, AccountTokenPojo accountToken) {
+        // Лабораторная 3: Добавить обработку Responses и Errors. Выводите их в лог.
+        // Подумайте почему в filter нет Response чтобы можно было удобно его сохранить.
+        Invocation.Builder request = buildRequest(path, null);
+
+        if (accountToken != null) {
+            request.header("Authorization", "Bearer " + accountToken.token);
+        }
+
+        try {
+            Logger.logRequestDetails(path, body);
+            String response = request.post(Entity.entity(body, MediaType.APPLICATION_JSON), String.class);
+            Logger.logResponse(response);
+
+            if (StringUtils.isBlank(response)) {
+                return null;
+            }
+
+            return JsonMapper.fromJson(response, responseType);
+        } catch (ResponseProcessingException ex) {
+            Logger.logError(ex.getResponse().readEntity(String.class));
+            throw ex;
+        } catch (Exception ex) {
+            Logger.logError(ex.getMessage());
+            throw ex;
+        }
+    }
+
+    private Invocation.Builder buildRequest(String path, Map<String, List<Object>> queryParams) {
+        WebTarget target = client
+                .target(REST_URI)
+                .path(path);
+
+        if (queryParams != null) {
+            for (Map.Entry<String, List<Object>> entry : queryParams.entrySet()) {
+                target = target.queryParam(entry.getKey(), entry.getValue().toArray());
+            }
+        }
+
+        return target
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON);
     }
 
     private static class RestClientLogFilter implements ClientRequestFilter {
         @Override
         public void filter(ClientRequestContext requestContext) {
-            Logger.debug(requestContext.getEntity().toString());
-
             // Лабораторная 3: разобраться как работает данный фильтр
             // и добавить логирование METHOD и HEADERS.
+            Logger.logContext(requestContext);
         }
     }
 }

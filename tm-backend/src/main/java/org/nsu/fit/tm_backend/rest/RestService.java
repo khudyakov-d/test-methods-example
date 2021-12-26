@@ -282,7 +282,7 @@ public class RestService {
     @Path("/subscriptions")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed(Authority.ADMIN_ROLE)
-    public Response getSubscriptions(@DefaultValue("") @QueryParam("customer_id") String customerIdStr) {
+    public Response getSubscriptions(@QueryParam("customer_id") String customerIdStr) {
         try {
             UUID customerId = null;
             if (!StringUtils.isBlank(customerIdStr)) {
@@ -295,6 +295,7 @@ public class RestService {
 
             return Response.ok().entity(JsonMapper.toJson(subscriptions, true)).build();
         } catch (IllegalArgumentException ex) {
+            System.out.println(ex);
             return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage() + "\n" + ExceptionUtils.getFullStackTrace(ex)).build();
         }
     }

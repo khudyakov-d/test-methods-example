@@ -18,7 +18,11 @@ version '1.0.0'
 
 apply plugin: 'io.qameta.allure'
 apply plugin: 'java'
-
+allprojects {
+    repositories {
+        maven { url "https://maven.google.com" }
+    }
+}
 repositories {
     maven { url "https://plugins.gradle.org/m2/" }
     mavenCentral()
@@ -57,6 +61,8 @@ dependencies {
 
     compile group:'org.seleniumhq.selenium', name: 'selenium-support', version: '3.11.0'
     compile group:'org.seleniumhq.selenium', name: 'selenium-java', version: '3.11.0'
+
+    implementation 'com.github.javafaker:javafaker:1.0.2'
 }
 
 def api_suite = project.hasProperty("api")

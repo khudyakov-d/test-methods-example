@@ -97,6 +97,11 @@ public class Browser implements Closeable {
         return webDriver.findElement(element).getAttribute("value");
     }
 
+    public String getText(By element) {
+        makeScreenshot();
+        return webDriver.findElement(element).getText();
+    }
+
     public boolean isElementPresent(By element) {
         makeScreenshot();
         return webDriver.findElements(element).size() != 0;

@@ -7,13 +7,17 @@ import org.openqa.selenium.By;
 // Лабораторная 4: Необходимо имплементировать реализацию методов данного класса,
 // а при необходимости расширить его.
 public class LoginScreen extends Screen {
+
     public LoginScreen(Browser browser) {
         super(browser);
     }
 
-    public AdminScreen loginAsAdmin() {
+    @Override
+    protected void waitLoading() {
         browser.waitForElement(By.id("email"));
+    }
 
+    public AdminScreen loginAsAdmin() {
         browser.typeText(By.id("email"), "admin");
         browser.typeText(By.id("password"), "setup");
 
@@ -25,8 +29,12 @@ public class LoginScreen extends Screen {
         return new AdminScreen(browser);
     }
 
-    public CustomerScreen loginAsCustomer(String userName, String password) {
-        // TODO: Please implement this...
+    public CustomerScreen loginAsCustomer(String login, String password) {
+        browser.typeText(By.id("email"), login);
+        browser.typeText(By.id("password"), password);
+
+        browser.click(By.xpath("//button[@type = 'submit']"));
+
         return new CustomerScreen(browser);
     }
 }
