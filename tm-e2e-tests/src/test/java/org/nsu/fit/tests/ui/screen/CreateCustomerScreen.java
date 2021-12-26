@@ -12,16 +12,11 @@ public class CreateCustomerScreen extends Screen {
     private static final String CUSTOMER_LOGIN = "//input[@name = 'login']";
 
     private static final String CUSTOMER_CREATE_BUTTON = "//button[@type='submit' and text()='Create']";
-    private static final String CUSTOMER_CANCEL_BUTTON = "//button[@type='button' and text()='Back']";
 
     public static final String ERROR_MESSAGE = "//div[@role='alert']";
 
     public CreateCustomerScreen(Browser browser) {
         super(browser);
-    }
-
-    @Override
-    protected void waitLoading() {
         browser.waitForElement(By.xpath(CUSTOMER_FIRST_NAME));
     }
 
@@ -54,11 +49,6 @@ public class CreateCustomerScreen extends Screen {
             throw new IllegalStateException("Error occurred during customer creation");
         }
 
-        return new AdminScreen(browser);
-    }
-
-    public AdminScreen clickCancel() {
-        browser.click(By.xpath(CUSTOMER_CANCEL_BUTTON));
         return new AdminScreen(browser);
     }
 
