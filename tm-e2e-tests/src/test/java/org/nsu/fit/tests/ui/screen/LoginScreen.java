@@ -10,10 +10,6 @@ public class LoginScreen extends Screen {
 
     public LoginScreen(Browser browser) {
         super(browser);
-    }
-
-    @Override
-    protected void waitLoading() {
         browser.waitForElement(By.id("email"));
     }
 
@@ -29,12 +25,4 @@ public class LoginScreen extends Screen {
         return new AdminScreen(browser);
     }
 
-    public CustomerScreen loginAsCustomer(String login, String password) {
-        browser.typeText(By.id("email"), login);
-        browser.typeText(By.id("password"), password);
-
-        browser.click(By.xpath("//button[@type = 'submit']"));
-
-        return new CustomerScreen(browser);
-    }
 }

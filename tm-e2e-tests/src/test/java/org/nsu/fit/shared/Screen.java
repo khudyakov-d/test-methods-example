@@ -7,9 +7,6 @@ public abstract class Screen {
 
     public Screen(Browser browser) {
         this.browser = browser;
-        waitLoading();
     }
-
-    abstract protected void waitLoading();
 
 }
