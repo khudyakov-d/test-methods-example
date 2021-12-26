@@ -1,8 +1,39 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite verbose="1" name="UI Tests" annotations="JDK" parallel="tests">
-    <test name="AcceptanceTest">
+    <test name="CreateCustomerTest">
         <classes>
-            <class name="org.nsu.fit.tests.ui.CreateCustomerTest" />
+            <class name="org.nsu.fit.tests.ui.admin.customer.CreateCustomerTest" />
+            <class name="org.nsu.fit.tests.ui.admin.customer.CreateCustomerCancelTest" />
         </classes>
     </test>
+    <test name="SearchCustomerTest">
+        <classes>
+            <class name="org.nsu.fit.tests.ui.admin.customer.SearchCustomerTest" />
+        </classes>
+    </test>
+    <test name="CreatePlanTest">
+        <classes>
+            <class name="org.nsu.fit.tests.ui.admin.plan.CreatePlanTest" />
+            <class name="org.nsu.fit.tests.ui.admin.plan.CreatePlanCancelTest" />
+        </classes>
+    </test>
+    <test name="SearchPlanTest">
+        <classes>
+            <class name="org.nsu.fit.tests.ui.admin.plan.SearchPlanTest" />
+        </classes>
+    </test>
+
+    <test name="TopUpBalanceTest">
+        <classes>
+            <class name="org.nsu.fit.tests.ui.customer.TopUpBalanceTest" />
+            <class name="org.nsu.fit.tests.ui.customer.TopUpBalanceNegativeSumTest" />
+        </classes>
+    </test>
+    <test name="BuyPlanTest">
+        <classes>
+            <class name="org.nsu.fit.tests.ui.customer.BuyPlanTest" />
+            <class name="org.nsu.fit.tests.ui.customer.BuyPlanWithNoMoneyTest" />
+        </classes>
+    </test>
+
 </suite>

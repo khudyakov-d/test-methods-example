@@ -14,13 +14,11 @@ public class ContactPojo {
     @JsonProperty("login")
     public String login;
 
-    /**
-     * Лабораторная *: здесь следует обратить внимание на хранение и передачу пароля
-     * в открытом виде, почему это плохо, как можно исправить.
-     */
     @JsonProperty("password")
     public String pass;
 
     @JsonProperty("balance")
     public int balance;
+
+
 }

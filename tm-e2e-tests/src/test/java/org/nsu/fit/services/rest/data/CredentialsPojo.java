@@ -10,4 +10,5 @@ public class CredentialsPojo {
 
     @JsonProperty("pass")
     public String pass;
+
 }

@@ -16,4 +16,5 @@ public class AccountTokenPojo {
 
     @JsonProperty("token")
     public String token;
+
 }

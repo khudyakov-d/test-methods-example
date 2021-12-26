@@ -35,6 +35,7 @@ public class SubscriptionManager extends ParentManager {
         Map<UUID, PlanPojo> planIdToPlan = dbService.getPlans().stream()
                 .collect(Collectors.toMap(plan -> plan.id, plan -> plan));
 
+        System.out.println();
         List<SubscriptionPojo> subscriptions;
         if (customerId == null) {
             subscriptions = dbService.getSubscriptions();
@@ -42,6 +43,7 @@ public class SubscriptionManager extends ParentManager {
             subscriptions = dbService.getSubscriptions(customerId);
         }
 
+        System.out.println("sdadasdadasdasda");
         // Дозаполняем поля, типа planName, planDetails и planFee.
         for (SubscriptionPojo subscription : subscriptions) {
             PlanPojo plan = planIdToPlan.getOrDefault(subscription.planId, null);
